@@ -97,3 +97,5 @@ to see examples
     ```bash
     cd datasets && curl -L https://gamma.hdfgroup.org/ftp/pub/outgoing/NASAHDF/AIRS.2002.08.01.L3.RetStd_H031.v4.0.21.0.G06104133732.hdf -o AIRS.2002.08.01.L3.RetStd_H031.v4.0.21.0.G06104133732.hdf
     ```
+
+* open `notebooks/example_load_visualize_dataset.ipynb` using Jupyter Notebook 
