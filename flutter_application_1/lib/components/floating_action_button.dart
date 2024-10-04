@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/components/custom_textfield.dart';
 import 'package:flutter_application_1/services/api.dart';
-import 'package:flutter_sms/flutter_sms.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -29,12 +28,6 @@ class CustomFloatingActionButton extends StatelessWidget {
         // Placemark place = placemarks[0];
         // log("El place gaai : ");
         // log(place.toString());
-
-        String _result = await sendSMS(message: "Hello msg", recipients: [""])
-            .catchError((onError) {
-          print(onError);
-        });
-        print(_result);
 
         showDialog(
             context: context,
