@@ -30,9 +30,8 @@ class CustomFloatingActionButton extends StatelessWidget {
         // log("El place gaai : ");
         // log(place.toString());
 
-        String _result =
-            await sendSMS(message: "Hello msg", recipients: ["1234567890"])
-                .catchError((onError) {
+        String _result = await sendSMS(message: "Hello msg", recipients: [""])
+            .catchError((onError) {
           print(onError);
         });
         print(_result);
