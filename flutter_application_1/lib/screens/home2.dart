@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/home.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 
-Future<String?> getAddressName(double longitide, double latitude) async {
-  List<Placemark> placemarks =
-      await placemarkFromCoordinates(37.4219983, -122.084);
-  Placemark place = placemarks[0];
-  // log("El place gaai : ");
-  // log(place.toString());
-  return place.subAdministrativeArea;
-}
 
 class NewHome extends StatelessWidget {
   const NewHome({super.key});
@@ -33,7 +26,7 @@ class NewHome extends StatelessWidget {
           ),
           backgroundColor: const Color.fromARGB(255, 74, 189, 78),
           title: const Text(
-            'هل تود استخدام أخر موقع تم تسجيله ام ادخال موقع آخر؟',
+            'هل تود استخدام أخر موقع تم تسجيله الموقع الحالي؟',
             style: TextStyle(fontSize: 20),
           ),
           children: <Widget>[
@@ -56,9 +49,12 @@ class NewHome extends StatelessWidget {
               color: const Color.fromARGB(255, 213, 227, 15),
               child: SimpleDialogOption(
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 3),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                },
                 child: const Text(
-                  '🗺️ ادخال موقع جديد',
+                  '🗺️ استخدم الموقع الحالي',
                   style: TextStyle(
                       fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
                 ),

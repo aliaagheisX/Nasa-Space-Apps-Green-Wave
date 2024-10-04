@@ -28,7 +28,7 @@ class MainApp extends StatelessWidget {
             centerTitle: true,
             elevation: 20,
           ),
-          body: HomeScreen(), // Your NewHome widget
+          body: NewHome(), // Your NewHome widget
         ),
       ),
     );
