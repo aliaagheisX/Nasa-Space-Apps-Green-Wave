@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/components/custom_textfield.dart';
 import 'package:flutter_application_1/services/api.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
   CustomFloatingActionButton({super.key});
@@ -17,10 +19,23 @@ class CustomFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () async {
-        LocationPermission permission = await Geolocator.requestPermission();
+        // LocationPermission permission = await Geolocator.requestPermission();
 
-        Position position = await Geolocator.getCurrentPosition();
-        log(position.toString());
+        // Position position = await Geolocator.getCurrentPosition();
+        // log(position.toString());
+
+        // List<Placemark> placemarks = await placemarkFromCoordinates(
+        //     position.latitude, position.longitude);
+        // Placemark place = placemarks[0];
+        // log("El place gaai : ");
+        // log(place.toString());
+
+        String _result =
+            await sendSMS(message: "Hello msg", recipients: ["1234567890"])
+                .catchError((onError) {
+          print(onError);
+        });
+        print(_result);
 
         showDialog(
             context: context,
