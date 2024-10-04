@@ -1,10 +1,9 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:ui/components/custom_textfield.dart';
-import 'package:ui/services/api.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_application_1/components/custom_textfield.dart';
+import 'package:flutter_application_1/services/api.dart';
+import 'package:geolocator/geolocator.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
   CustomFloatingActionButton({super.key});
@@ -18,6 +17,8 @@ class CustomFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () async {
+        LocationPermission permission = await Geolocator.requestPermission();
+
         Position position = await Geolocator.getCurrentPosition();
         log(position.toString());
 
