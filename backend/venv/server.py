@@ -7,24 +7,39 @@ import datetime
 import numpy as np
 import matplotlib.pyplot as plt
 from pymongo import MongoClient
+from crontab import CronTab
+from datetime import datetime
+from flask_pymongo import PyMongo
+
+
+# # Create a new CronTab instance for the current user
+# cron = CronTab(user=True)
+
+# # Create a new job that echoes "hello_world" every minute
+# job = cron.new(command=getEVI())
+# job2=cron.new(command=)
+# job.minute.every(1)
+
+# # Write the job to the crontab
+# cron.write()
+
 app=Flask(__name__)
-
-
-
-
-
 # Connect to MongoDB
 client = MongoClient('mongodb+srv://mennamohamed0207:PZN2oliMRnf8KqmL@cluster0.ue0sm7q.mongodb.net/NasaSpaceApp')
 db = client['farm_data']
 collection = db['locations']
+messages=db['messages']
+
+
 
 @app.route('/add_location', methods=['POST'])
 def add_location():
     data = request.get_json()
-    lon = data['long']
-    lat = data['lat']
+    lon = data.get('long')
+    lat = data.get('lat')
+    
     location = {
-        "name": data.get("name", "Unknown"),
+        "username": data.get("username", "default_farmer"),
         "location":  [lon, lat]
     }
     collection.insert_one(location)
@@ -68,7 +83,7 @@ def getNDVI(lon,lat):
     return float(data.mean())*float(subset['scale'])
 #get NVDI from longitide and latitde 
 
-messages = [
+good_messages = [
     "المحصول بخير ومش محتاج تسميد دلوقتي! 🌿",
     "الأرض صافية والمزروعات قوية، مفيش داعي للتسميد. 💪🌾",
     "المحصول صحي ومش محتاج أي تدخلات، خليها على طبيعتها! 🍀",
@@ -98,12 +113,31 @@ fertilizer_messages = [
     "المحصول مش واخد كفايته من التغذية، يفضل تضيف سماد عضوي لدعمه. 🥦",
     "لاحظنا نقص في العناصر، ياريت تستعمل سماد متكامل لدعم النمو. 🌱",
 ]
+@app.route('/getMessage',methods=['POST'])
+def getMessages():
+    req = request.get_json()
+    username=req.get("username")
+    
+    user_messages = list(messages.find({"username": username}))
+    # Convert each message document to a format that can be serialized
+    serialized_messages = []
+    for message in user_messages:
+        # Convert ObjectId to string and append to serialized list
+        message['_id'] = str(message['_id'])
+        serialized_messages.append(message)
+
+    # Return the messages as a JSON response
+    return jsonify({"messages": serialized_messages})
+    
+
+    
 @app.route('/fertilizers',methods=['POST'])
 def getFertilizerInfo():
     req = request.get_json()
     if request.method == 'POST':
         long = req.get('long')
         lat = req.get("lat")
+        username=req.get("username")
         
         # Call the Python code (replace NDVI with the actual calculation)
         
@@ -111,7 +145,7 @@ def getFertilizerInfo():
         EVI=getEVI(long,lat)
         print("NDVI is ",NDVI)
         if NDVI > 0.5 and NDVI < 1 and EVI>0.5 and EVI <1:
-            selected_message = random.choice(messages)
+            selected_message = random.choice(good_messages)
             data = {"message": selected_message}
         elif NDVI > 0.2 and NDVI < 0.5 and EVI>0.2 and EVI <0.5:
             selected_message = random.choice(fertilizer_messages)
@@ -119,13 +153,14 @@ def getFertilizerInfo():
         elif NDVI < 0.2 and NDVI > 0 and EVI<0.2 and EVI >0:
             selected_message = "الأرض فاضية تقريبًا، مفيش نباتات مزروعة أو النباتات لسه في بداية النمو."
             data = {"message": selected_message}
-        
+        else:
+            return jsonify({"message":"Not found"}),404
+        current_time=datetime.now().strftime("%Y-%m-%d")
+        messages=db.messages
+        messages.insert_one({"message":selected_message,"time":current_time,"username":username})
         return jsonify(data)
     else:
         return jsonify({"message": "error has occurred"})
-
-
-
 
 if __name__ == '__main__':
     app.run()
