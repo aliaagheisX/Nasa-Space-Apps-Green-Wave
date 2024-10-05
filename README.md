@@ -39,51 +39,12 @@ if all doesn't work try
 ```bash
 pip install pyhdf
 ```
+### 3. install h5py
+```bash
+conda install h5py
+```
 
-#### 2. Install & Download `Hdf4`
-you can download latest `hdf4` from [here](https://support.hdfgroup.org/downloads/hdf4/hdf4_3_0.html) 
 
-*  For Windows
-    
-    download `WSL` and follow instruction or get creative and follow steps [here](https://hdfeos.org/software/pyhdf.php) 
-*  For Linux
-    1. Install Requirments
-        * JPEG distribution release 6b or later.
-        ```bash
-        sudo apt-get install libjpeg-dev
-        ```
-        * ZLIB 1.1.4(libz.a) or later.  
-        ```bash
-        sudo apt-get install zlib1g-dev
-        ```
-        * numpy
-        ```bash
-        conda install numpy
-        ```
-        * setuptools
-        ```bash
-        conda install setuptools
-        ```
-    2. download hdf4
-        ```bash
-        cd vendor
-        ```
-        ```bash
-        curl -L  https://github.com/HDFGroup/hdf4/archive/refs/tags/hdf4.3.0.tar.gz -o hdf4.3.0.tar.gz
-        ```
-        ```bash
-        tar -xvf hdf4.3.0.tar.gz
-        ```
-    3. Install hdf4
-        ```bash
-        cd vendor/hdf4-hdf4.3.0/
-        ```
-        ```bash
-        ./configure
-        ```
-        ```bash
-        sudo make install
-        ```
 ### Install Jupyter Notebook
 to see examples 
 
