@@ -37,14 +37,25 @@ def add_location():
     data = request.get_json()
     lon = data.get('long')
     lat = data.get('lat')
-    checkNDVI=getNDVI(lon,lat)
+    username = data.get("username", "default_farmer")
+
+    # Check if the location with the same username, latitude, and longitude already exists
+    existing_location = collection.find_one({"username": username, "location": [lon, lat]})
+
+    if existing_location:
+        # Location already exists, so don't insert again
+        return jsonify({"message": "Location already exists for this user!"}), 409  # 409 Conflict
+
+    # Proceed to insert the new location
+    checkNDVI = getNDVI(lon, lat)
     print(checkNDVI)
     location = {
-        "username": data.get("username", "default_farmer"),
-        "location":  [lon, lat]
+        "username": username,
+        "location": [lon, lat]
     }
     collection.insert_one(location)
     return jsonify({"message": "Location added successfully!"}), 201
+
 def getEVI(lon,lat):
     url = "https://modis.ornl.gov/rst/api/v1/"
     header = {'Accept': 'application/json'} # Use following for a csv response: header = {'Accept': 'text/csv'}
@@ -165,6 +176,31 @@ def getFertilizerInfo():
         return jsonify(data)
     else:
         return jsonify({"message": "error has occurred"})
+    
+@app.route('/update_location', methods=['POST'])
+def update_location():
+    # Parse the incoming request data
+    data = request.get_json()
+    username = data.get("username")
+    new_lon = data.get("long")
+    new_lat = data.get("lat")
+
+    # Check if all required fields are provided
+    if not username or new_lon is None or new_lat is None:
+        return jsonify({"message": "Invalid input data. Make sure 'username', 'long' and 'lat' are provided."}), 400
+
+    # Update the location in the MongoDB collection
+    result = collection.update_one(
+        {"username": username},  # Filter condition
+        {"$set": {"location": [new_lon, new_lat]}}  # Update condition
+    )
+
+    # Check if the update was successful
+    if result.matched_count > 0:
+        return jsonify({"message": "Location updated successfully!"}), 200
+    else:
+        return jsonify({"message": "No matching user found to update."}), 404
+
 
 if __name__ == '__main__':
     app.run()
