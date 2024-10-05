@@ -13,6 +13,8 @@ dependencies:
   geolocator: ^13.0.1
   font_awesome_flutter: ^10.7.0
   geocoding: ^3.0.0
+  another_flutter_splash_screen: ^1.2.1
+  syncfusion_flutter_gauges: ^27.1.51
 
 dev_dependencies:
   flutter_test:
@@ -24,3 +26,6 @@ flutter:
   assets:
     - assets/images/wheat.jpeg
     - assets/images/image.png
+    - assets/farming.gif
+    - assets/leaf.gif
+    - assets/farmer.gif
