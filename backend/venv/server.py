@@ -248,7 +248,7 @@ def get_soil_moist_from_path(path, bounding_box, is_am = True):
         print(min_lon,min_lat,max_lon,max_lat)
         
         n, m = data.shape
-        plot(path,(min_lon,max_lon),(min_lat,max_lat))
+        # plot(path,(min_lon,max_lon),(min_lat,max_lat))
         sum, cnt = 0,0
         for i in range(n):
             for j in range(m):
@@ -328,7 +328,7 @@ def plot(path, lon_range=None, lat_range=None):
         plt.show()
 
     
-def fetch_data(lat, lon, folder_path="datasets/smap", time_start = '2024-10-01T00:00:00Z', time_end = '2024-10-02T21:48:13Z'):
+def fetch_data(lat, lon, folder_path="datasets/smap", time_start = '2024-10-01T00:00:00Z', time_end = '2024-10-03T21:48:13Z'):
     short_name = 'SPL3SMP'
     version = '009'
     polygon = ''
@@ -356,22 +356,24 @@ def getMoisture():
     today = datetime.utcnow()
 
     # Calculate yesterday's date
-    yesterday = today - timedelta(days=1)
+    two_daysbeforeyesterday = today - timedelta(days=5)
 
     # Format it in the desired format: YYYY-MM-DDTHH:MM:SSZ
-    yesterday_formatted = yesterday.strftime('%Y-%m-%dT00:00:00Z')
-    
+    two_daysbeforeyesterday_formatted = two_daysbeforeyesterday.strftime('%Y-%m-%dT00:00:00Z')
+    yesterday=today-timedelta(days=1)
+    yesterday_formatted=yesterday.strftime('%Y-%m-%dT00:00:00Z')
     sum, cnt = 0, 1e-9
     folder_path = "datasets/smap"
-    url_list = fetch_data(lat, lon)
+    url_list = fetch_data(lat, lon,time_start=two_daysbeforeyesterday_formatted, time_end=yesterday_formatted)
     for url in url_list:
         if url[-2:] == 'h5':
             file_name = url.split('/')[-1]
             path = folder_path + "/" + file_name
-            bounding_box = get_bounding_box(lat, lon, 100, 100)
+            bounding_box = get_bounding_box(lat, lon, 70, 70)
             partial_sum, partial_cnt = get_soil_moist_from_path(path, bounding_box)
             sum += partial_sum
             cnt += partial_cnt
+            print(partial_sum, partial_cnt)
     answer = sum / cnt
     return jsonify(answer)
     
