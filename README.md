@@ -12,8 +12,11 @@ Our Project is a mobile-based solution that leverages satellite data to provide 
 - **🌿 Improved Crop Health**: Detect crop stress early and intervene quickly to maintain plant health.
 - **📈 Increased Productivity**: Ensure crops get the right amount of water and nutrients, boosting yields and productivity.
 - **📱 User-Friendly**: Complex satellite data is translated into clear messages and visualizations for easy understanding.
-# 📱 How It Works
+## 🛠️ Architecture
+This is the block diagram of our program
+![image](https://github.com/user-attachments/assets/d95da488-c529-4d4a-814c-9dcedeb7a55d)
 
+# 📱 How It Works
 ## Requirements
 * python 3.10 or later
 * Jupyter Notbook
@@ -80,4 +83,10 @@ to see examples
     ```bash
     pip install -r requirements.txt
     ```
+## 🎯 Future Goals
+
+Our vision is to continue evolving AgriMonitor into a comprehensive farming assistant by:
+
+- 🌾 Providing **crop recommendations** based on soil and vegetation data.
+- 🤖 Integrating a **chatbot** to answer common agricultural queries and offer personalized suggestions.
 
