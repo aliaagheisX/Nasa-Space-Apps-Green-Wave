@@ -48,14 +48,17 @@ def add_location():
 def getEVI(lon,lat):
     url = "https://modis.ornl.gov/rst/api/v1/"
     header = {'Accept': 'application/json'} # Use following for a csv response: header = {'Accept': 'text/csv'}
-    response = requests.get(f'https://modis.ornl.gov/rst/api/v1/MOD13Q1/dates?latitude={lat}&longitude={lon}', headers=header)
-    dates = json.loads(response.text)['dates']
-    start_date, end_data = dates[-2]['modis_date'],  dates[-1]['modis_date']
-    band = '250m_16_days_EVI'
+    try:
+        response = requests.get(f'https://modis.ornl.gov/rst/api/v1/MOD13Q1/dates?latitude={lat}&longitude={lon}', headers=header)
+        dates = json.loads(response.text)['dates']
+        start_date, end_data = dates[-2]['modis_date'],  dates[-1]['modis_date']
+        band = '250m_16_days_EVI'
 
-    response = requests.get(f'https://modis.ornl.gov/rst/api/v1/MOD13Q1/subset?latitude={lat}&longitude={lon}&startDate={start_date}&endDate={end_data}&band={band}&kmAboveBelow=70&kmLeftRight=70', headers=header)
+        response = requests.get(f'https://modis.ornl.gov/rst/api/v1/MOD13Q1/subset?latitude={lat}&longitude={lon}&startDate={start_date}&endDate={end_data}&band={band}&kmAboveBelow=70&kmLeftRight=70', headers=header)
 
-    subset = json.loads(response.text)
+        subset = json.loads(response.text)
+    except:
+        return jsonify({"message":"API didn't make it 🤯"})
     data = subset['subset'][0]['data']
     data = np.array(data).reshape(subset['nrows'], -1)
     data_null = data.min()
