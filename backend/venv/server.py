@@ -131,7 +131,7 @@ fertilizer_messages = [
 @app.route('/getMessage',methods=['POST'])
 def getMessages():
     req = request.get_json()
-    username=req.get("username")
+    username = req.get("username", "menna")
     
     user_messages = list(messages.find({"username": username}))
     # Convert each message document to a format that can be serialized
@@ -152,7 +152,7 @@ def getFertilizerInfo():
     if request.method == 'POST':
         long = req.get('long')
         lat = req.get("lat")
-        username=req.get("username")
+        username=req.get("username","menna")
         
         # Call the Python code (replace NDVI with the actual calculation)
         
@@ -181,7 +181,7 @@ def getFertilizerInfo():
 def update_location():
     # Parse the incoming request data
     data = request.get_json()
-    username = data.get("username")
+    username = data.get("username","menna")
     new_lon = data.get("long")
     new_lat = data.get("lat")
 
