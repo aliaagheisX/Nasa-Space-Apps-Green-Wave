@@ -1,11 +1,26 @@
 # Nasa Space Apps Green Wave
-Leveraging Earth Observation data for informed Agriculture Decision-Making
+* Challenge: Leveraging Earth Observation data for informed Agriculture Decision-Making <br/>
+ **Empowering Farmers with Real-Time Satellite Data Insights for Optimized Crop Management**
+
+## 🌟 Project Summary
+
+Our Project is a mobile-based solution that leverages satellite data to provide farmers with real-time insights on soil moisture and plant health. Utilizing data from NASA’s Terra satellite (MODIS) and SMAP sensor, the system enables farmers to make informed decisions to improve water usage and boost crop yields. Through our user-friendly Flutter app, farmers can access crucial information about soil conditions and vegetation health directly from their smartphones. Our solution aims to enhance agricultural productivity while promoting sustainable farming practices. 🌱📈
+
+## 🌟 Key Benefits
+
+- **🚿 Optimized Irrigation**: Adjust water usage based on real-time soil moisture levels.
+- **🌿 Improved Crop Health**: Detect crop stress early and intervene quickly to maintain plant health.
+- **📈 Increased Productivity**: Ensure crops get the right amount of water and nutrients, boosting yields and productivity.
+- **📱 User-Friendly**: Complex satellite data is translated into clear messages and visualizations for easy understanding.
+# 📱 How It Works
 
 ## Requirements
 * python 3.10 or later
 * Jupyter Notbook
 * PyHDF
 * gcc
+* Flask
+* MongoDB
 ### Install Python using MiniConda
 1. Download and install MiniConda from [here](https://docs.anaconda.com/miniconda/#quick-command-line-install)
 2. create new environment
@@ -43,8 +58,20 @@ pip install pyhdf
 ```bash
 conda install h5py
 ```
-
-
+### Install Flask 
+- Create a Virtual Environment (Optional but Recommended):
+  ```sh
+  python -m venv venv
+  ```
+- If you are on Windows use this command:
+  ```sh
+  venv\Scripts\activate
+  ```
+- Install flask:
+  ```sh
+  pip install Flask
+  ```
+  
 ### Install Jupyter Notebook
 to see examples 
 
@@ -53,10 +80,4 @@ to see examples
     ```bash
     pip install -r requirements.txt
     ```
-## Example
-* download example dataset
-    ```bash
-    cd datasets && curl -L https://gamma.hdfgroup.org/ftp/pub/outgoing/NASAHDF/AIRS.2002.08.01.L3.RetStd_H031.v4.0.21.0.G06104133732.hdf -o AIRS.2002.08.01.L3.RetStd_H031.v4.0.21.0.G06104133732.hdf
-    ```
 
-* open `notebooks/example_load_visualize_dataset.ipynb` using Jupyter Notebook 
