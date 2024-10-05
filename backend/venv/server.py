@@ -255,7 +255,7 @@ def get_soil_moist_from_path(path, bounding_box, is_am = True):
                 if (min_lon <= longitude[i][j] <= max_lon) and (min_lat <= latitude[i][j] <= max_lat) and (data[i][j] != 0):
                     sum += data[i][j]
                     cnt += 1
-        return (sum / cnt)
+        return sum, cnt
 
 def plot(path, lon_range=None, lat_range=None):
     """
@@ -360,14 +360,22 @@ def getMoisture():
 
     # Format it in the desired format: YYYY-MM-DDTHH:MM:SSZ
     yesterday_formatted = yesterday.strftime('%Y-%m-%dT00:00:00Z')
-    url_list = fetch_data(lat, lon)
+    
+    sum, cnt = 0, 1e-9
     folder_path = "datasets/smap"
-    file_name = url_list[0].split('/')[-1]
-    path = folder_path + "/" + file_name
-    bounding_box = get_bounding_box(lat, lon, 100, 100)
-    answer = get_soil_moist_from_path(path, bounding_box)
+    url_list = fetch_data(lat, lon)
+    for url in url_list:
+        if url[-2:] == 'h5':
+            file_name = url.split('/')[-1]
+            path = folder_path + "/" + file_name
+            bounding_box = get_bounding_box(lat, lon, 100, 100)
+            partial_sum, partial_cnt = get_soil_moist_from_path(path, bounding_box)
+            sum += partial_sum
+            cnt += partial_cnt
+    answer = sum / cnt
     return jsonify(answer)
     
+        
         
 
 if __name__ == '__main__':
